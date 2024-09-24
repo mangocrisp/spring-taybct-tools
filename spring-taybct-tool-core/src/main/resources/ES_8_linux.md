@@ -60,7 +60,7 @@ mv http.p12 ..
 !!! 注意，这里默认你已经解压过，并创建了对应的文件夹，把 elasticsearch-ca.pem 移动到 kibana 目录下的 config/certs
 
 ```bash
-mv elasticsearch-ca.pem /zhsq/app/ELK/es8/kibana/config/certs
+mv elasticsearch-ca.pem /data/app/ELK/es8/kibana/config/certs
 ```
 
 最后，我生成的文件
@@ -111,11 +111,11 @@ node.name: node-1
 #
 # Path to directory where to store the data (separate multiple locations by comma):
 #
-path.data: /zhsq/app/ELK/es8/elasticsearch/data
+path.data: /data/app/ELK/es8/elasticsearch/data
 #
 # Path to log files:
 #
-path.logs: /zhsq/app/ELK/es8/elasticsearch/logs
+path.logs: /data/app/ELK/es8/elasticsearch/logs
 #
 # ----------------------------------- Memory -----------------------------------
 #
@@ -270,12 +270,12 @@ openssl x509 -req -in kibana-server.csr -signkey kibana-server.key -out kibana-s
 server.port: 18601
 server.host: "10.18.90.190"
 server.ssl.enabled: true
-server.ssl.certificate: /zhsq/app/ELK/es8/kibana/config/certs/kibana-server.crt
-server.ssl.key: /zhsq/app/ELK/es8/kibana/config/certs/kibana-server.key
+server.ssl.certificate: /data/app/ELK/es8/kibana/config/certs/kibana-server.crt
+server.ssl.key: /data/app/ELK/es8/kibana/config/certs/kibana-server.key
 elasticsearch.hosts: ["https://10.18.90.190:18200"]
 elasticsearch.username: "kibana_system"
 elasticsearch.password: "K7m80HWy_lUjBI50ff6s"
-elasticsearch.ssl.certificateAuthorities: [ "/zhsq/app/ELK/es8/kibana/config/certs/elasticsearch-ca.pem" ]
+elasticsearch.ssl.certificateAuthorities: [ "/data/app/ELK/es8/kibana/config/certs/elasticsearch-ca.pem" ]
 elasticsearch.ssl.verificationMode: none
 i18n.locale: "zh-CN"
 ```
@@ -295,7 +295,7 @@ input {
         jdbc_user => "by-user"
         jdbc_password => "By-user2020"
         # MySQL依赖包路径；
-        jdbc_driver_library => "/zhsq/app/ELK/es8/logstash/bin/mysql/mysql-connector-java-8.0.20.jar"
+        jdbc_driver_library => "/data/app/ELK/es8/logstash/bin/mysql/mysql-connector-java-8.0.20.jar"
         # the name of the driver class for mysql
         jdbc_driver_class => "com.mysql.cj.jdbc.Driver"
         # 数据库重连尝试次数
@@ -326,7 +326,7 @@ input {
         # Value can be any of: numeric,timestamp，Default value is "numeric"
         tracking_column_type => timestamp
         # record_last_run上次数据存放位置；
-        last_run_metadata_path => "/zhsq/app/ELK/es8/logstash/bin/mysql/taybct_api_log_last_updated_time.txt"
+        last_run_metadata_path => "/data/app/ELK/es8/logstash/bin/mysql/taybct_api_log_last_updated_time.txt"
         # 是否清除last_run_metadata_path的记录，需要增量同步时此字段必须为false；
         clean_run => false
         #
@@ -354,7 +354,7 @@ output {
             hosts => ["https://10.18.90.190:18200"]
             ssl => true
             ssl_certificate_verification => true
-            cacert => "/zhsq/app/ELK/es8/logstash/config/certs/elasticsearch-ca.pem"
+            cacert => "/data/app/ELK/es8/logstash/config/certs/elasticsearch-ca.pem"
             # 索引名字，必须小写
             index => "taybct_api_log"
             # 数据唯一索引（建议使用数据库KeyID）
@@ -363,7 +363,7 @@ output {
             # 这里虽然可以指定 template，但是我一直没成功，所以，建议是直接使用 kibana 去 POST | PUT
             # template_overwrite => true
             # template_name => "taybct_api_log"
-            # template => "/zhsq/app/ELK/es8/logstash/bin/mysql/template/taybct_api_log.json"
+            # template => "/data/app/ELK/es8/logstash/bin/mysql/template/taybct_api_log.json"
             user => "elastic"
             password => "R9I*Fa+K=L_R2C_W1XN7"
         }
